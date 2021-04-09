@@ -1,3 +1,9 @@
+# Fixed running the vcxagency-node as docker container:
+
+`./build_and_run_node.sh`
+
+Optionally pass any arguments eligible for docker-compose, e.g. `./build_and_run_node.sh -d`
+
 # Node VCX Agency
 - Implementation of [AriesVCX](https://github.com/hyperledger/aries-vcx/) compatible 
 [Mediator Agency](https://github.com/hyperledger/aries-rfcs/blob/master/concepts/0046-mediators-and-relays/README.md).

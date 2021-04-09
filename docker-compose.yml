@@ -1,0 +1,34 @@
+version: '3.1'
+
+services:
+  postgres:
+    image: postgres
+    container_name: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=mysecretpassword
+  
+  vcxagency-base:
+    build:
+      context: .
+      dockerfile: ./vcxagency-base/vcxagency-base.Dockerfile
+    image: vcxagency-base:1.15.0
+
+  vcxagency-node:
+    build:
+      context: .
+      dockerfile: ./vcxagency-node/Dockerfile
+    image: vcxagency-node:1.0.0
+    container_name: vcxagency-node
+    depends_on:
+      - postgres
+    ports:
+      - 9080:8080
+    env_file: vcxagency-node/config/docker-ea.env
+
+volumes:
+  pgdata:
+

@@ -4,20 +4,18 @@ FROM ${AGENCY_BASE_IMAGE}
 RUN npm install -g yarn
 
 USER node
-WORKDIR /home/node/easy-indysdk
-COPY ./easy-indysdk ./
-
-WORKDIR /home/node/vcxagency-client
-COPY ./vcxagency-client ./
-
-WORKDIR /home/node/vcxagency-node
-COPY ./vcxagency-node ./
+WORKDIR /home/node
+COPY ./easy-indysdk ./easy-indysdk
+COPY ./vcxagency-client ./vcxagency-client
+COPY ./vcxagency-node ./vcxagency-node
 
 USER root
 RUN chown -R node:node /home/node
 
 USER node
-RUN yarn install --production
+RUN yarn --cwd ./easy-indysdk install --production
+RUN yarn --cwd ./vcxagency-client install --production
+RUN yarn --cwd ./vcxagency-node install --production
 
 LABEL org.label-schema.schema-version="1.1.0"
 LABEL org.label-schema.name="vcxagency-node"
@@ -29,4 +27,4 @@ ENV LOG_JSON_TO_CONSOLE ${LOG_JSON_TO_CONSOLE:-'true'}
 
 EXPOSE ${SERVER_PORT}
 
-CMD ["npm", "run", "serve"]
+CMD ["yarn", "--cwd", "vcxagency-node", "run", "serve"]
